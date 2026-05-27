@@ -1,6 +1,6 @@
 import { RefObject, useEffect, useRef, useState } from "react";
 
-import { IItemMenu } from "@src/components/element";
+// import { IItemMenu } from "@src/components/element";
 
 export function useDetectDropdownPosition(
   initialize = false,
@@ -11,18 +11,19 @@ export function useDetectDropdownPosition(
   }: {
     parentRef: RefObject<HTMLDivElement>;
     childRef: RefObject<HTMLDivElement>;
-    data: IItemMenu[] | null;
+    data: any[] | null;
   },
 ) {
   const [isAbove, setAbove] = useState(initialize);
-  const itemsOffsetHeight = useRef<number>();
+  const itemsOffsetHeight = useRef<number | null>(null);
 
   const handleBeforeOpen = () => {
     if (childRef.current) {
       itemsOffsetHeight.current = childRef.current.offsetHeight;
     }
     if (!parentRef.current || !itemsOffsetHeight.current) return;
-    const bottomVisible = window.innerHeight - parentRef.current.getBoundingClientRect().bottom;
+    const bottomVisible =
+      window.innerHeight - parentRef.current.getBoundingClientRect().bottom;
     setAbove(bottomVisible < itemsOffsetHeight.current);
   };
 

@@ -1,6 +1,11 @@
 import { IRes } from "@src/models";
 import axios from "@src/requests";
-import { IRefreshTokenRequest, ISignIn2FaResponse, ISignInRequest, ISignInResponse } from "@src/requests/api/account/prop-state.type";
+import {
+  IRefreshTokenRequest,
+  ISignIn2FaResponse,
+  ISignInRequest,
+  ISignInResponse,
+} from "@src/requests/api/account/prop-state.type";
 
 const OAUTH_URL = "/auth";
 
@@ -10,7 +15,10 @@ const loginWithIdAndPassword = async (data: ISignInRequest) => {
   formData.append("password", data.password);
   // formData.append("country", data.country);
 
-  const response = await axios.post<ISignInResponse>(`${OAUTH_URL}/login`, formData);
+  const response = await axios.post<ISignInResponse>(
+    `${OAUTH_URL}/login`,
+    formData,
+  );
   return response.data;
 };
 

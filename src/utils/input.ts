@@ -1,8 +1,11 @@
 // function: handle change input with non-negative integer
 
-
 // function: handle change input with non-negative integer
-export const handleChangeInteger = (e: any, field: any, emptyValue: any = null) => {
+export const handleChangeInteger = (
+  e: any,
+  field: any,
+  emptyValue: any = null,
+) => {
   const value = e.target.value ?? "";
   if (/^-?[0-9]{0,20}$/.test(value)) {
     // Chỉ cho phép số nguyên dương
@@ -32,15 +35,26 @@ export const handleChangeNonNegativeInteger = (
     // Chỉ cho phép số nguyên dương
     const newValue = parseInt(value, 10);
     if (!isNaN(newValue)) {
-      if ((options?.min === undefined || newValue >= options.min) && (options?.max === undefined || newValue <= options.max)) {
+      if (
+        (options?.min === undefined || newValue >= options.min) &&
+        (options?.max === undefined || newValue <= options.max)
+      ) {
         // Kiểm tra giá trị có nằm trong khoảng min và max không
         field.onChange(newValue);
       } else {
         // Nếu không nằm trong khoảng, giữ nguyên giá trị cũ
         // field.onChange(field.value ?? "");
-        if (options?.max && newValue > options.max && options?.isSetLimitValue) {
+        if (
+          options?.max &&
+          newValue > options.max &&
+          options?.isSetLimitValue
+        ) {
           field.onChange(options?.max);
-        } else if (options?.min && newValue < options.min && options?.isSetLimitValue) {
+        } else if (
+          options?.min &&
+          newValue < options.min &&
+          options?.isSetLimitValue
+        ) {
           field.onChange(options?.min);
         } else {
           field.onChange(field.value ?? "");
@@ -74,7 +88,10 @@ export const getValueNumber = (
     // const newValue = parseFloat(value);
     const newValue = value;
     if (!isNaN(newValue)) {
-      if ((options?.min === undefined || newValue >= options.min) && (options?.max === undefined || newValue <= options.max)) {
+      if (
+        (options?.min === undefined || newValue >= options.min) &&
+        (options?.max === undefined || newValue <= options.max)
+      ) {
         // Kiểm tra giá trị có nằm trong khoảng min và max không
         // field.onChange(newValue);
         return newValue;
@@ -139,7 +156,10 @@ export const handleChangeNumber = (
 
 // function : handle change input with only a-z,0-9, space(without special character)
 // hỗ trợ nhiều ngôn ngữ. nên có thể loại trừ các ký tự đặc biệt
-export const handleChangeStringWithoutSpecialCharacter = (e: any, field: any) => {
+export const handleChangeStringWithoutSpecialCharacter = (
+  e: any,
+  field: any,
+) => {
   const value = e.target.value ?? "";
   const specialCharacters = /[!@#$%^&*(),.?":{}|/<>+_=[\]`~';\\-]/g;
   if (value.length > 0 && specialCharacters.test(value)) {
@@ -170,6 +190,8 @@ export const handleFormatPhoneNumber = (event: any) => {
 export const handleGetNumberValue = (e: any) => {
   const stringValue = e.target.value ?? "";
   if (stringValue === "") return null;
-  const newValue = !Number.isNaN(Number(stringValue)) ? Number(stringValue) : stringValue;
+  const newValue = !Number.isNaN(Number(stringValue))
+    ? Number(stringValue)
+    : stringValue;
   return newValue;
 };

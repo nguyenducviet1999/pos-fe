@@ -15,10 +15,11 @@ export const useFilterBar = (
     keysTypeNumber?: string[];
   },
 ) => {
-  const { searchParamsObject, redirectUpdateSearchParams } = useUpdateSearchParams<any>(
-    searchParamsProp?.keysTypeArray,
-    searchParamsProp?.keysTypeNumber,
-  );
+  const { searchParamsObject, redirectUpdateSearchParams } =
+    useUpdateSearchParams<any>(
+      searchParamsProp?.keysTypeArray,
+      searchParamsProp?.keysTypeNumber,
+    );
   const refFilterValueChange = React.useRef<any>({} as any);
 
   const handleChangeFilter = (key: string, value: any) => {
@@ -30,8 +31,14 @@ export const useFilterBar = (
 
   const onFilterSearch = (isSearch = true) => {
     if (!searchParamsObject) return;
-    const newSearchParamsObject = { ...searchParamsObject, ...refFilterValueChange.current };
-    redirectUpdateSearchParams(newSearchParamsObject, { isSearch, replace: true });
+    const newSearchParamsObject = {
+      ...searchParamsObject,
+      ...refFilterValueChange.current,
+    };
+    redirectUpdateSearchParams(newSearchParamsObject, {
+      isSearch,
+      replace: true,
+    });
     onChange && onChange(newSearchParamsObject);
   };
 

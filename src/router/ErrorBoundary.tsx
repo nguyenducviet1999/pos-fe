@@ -11,7 +11,10 @@ type IErrorBoundaryProps = {
 };
 
 export const LOCAL_STORAGE_WINDOW_RELOAD_DATETIME = "window_reload_datetime";
-export default class ErrorBoundary extends Component<IErrorBoundaryProps, { hasError: boolean }> {
+export default class ErrorBoundary extends Component<
+  IErrorBoundaryProps,
+  { hasError: boolean }
+> {
   constructor(props: IErrorBoundaryProps) {
     super(props);
     this.state = {
@@ -22,13 +25,25 @@ export default class ErrorBoundary extends Component<IErrorBoundaryProps, { hasE
   componentDidCatch(error: Error) {
     this.setState(null);
     // const errorStr = `Stack: ${error?.stack} Message: ${error?.message}`;
-    const arrError = ["ChunkLoadError", "Unable to preload CSS for", "Loading CSS chunk", "Failed to fetch dynamically"];
-    const isChunkLoadError = arrError.some((subStr: string) => (error?.stack ?? error.message)?.includes(subStr));
+    const arrError = [
+      "ChunkLoadError",
+      "Unable to preload CSS for",
+      "Loading CSS chunk",
+      "Failed to fetch dynamically",
+    ];
+    const isChunkLoadError = arrError.some((subStr: string) =>
+      (error?.stack ?? error.message)?.includes(subStr),
+    );
     if (isChunkLoadError) {
-      const oldDate = sessionStorage.getItem(LOCAL_STORAGE_WINDOW_RELOAD_DATETIME); // prevent from loop reload
+      const oldDate = sessionStorage.getItem(
+        LOCAL_STORAGE_WINDOW_RELOAD_DATETIME,
+      ); // prevent from loop reload
       if (!oldDate || dayjs().diff(dayjs(oldDate), "hour") > 1) {
         window.location.reload();
-        sessionStorage.setItem(LOCAL_STORAGE_WINDOW_RELOAD_DATETIME, dayjs().toString());
+        sessionStorage.setItem(
+          LOCAL_STORAGE_WINDOW_RELOAD_DATETIME,
+          dayjs().toString(),
+        );
       }
     }
     this.setState({ hasError: true });

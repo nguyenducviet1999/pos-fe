@@ -29,9 +29,11 @@ export const ctUploadFileAPI = {
 };
 
 export const ctUploadFileKeyAPI = {
-  API_OPERATING_NOTICE_GSM: (id: string, name: string) => `${PREFIX_API_FILE_STORE}/upload/${id}/${name}`,
+  API_OPERATING_NOTICE_GSM: (id: string, name: string) =>
+    `${PREFIX_API_FILE_STORE}/upload/${id}/${name}`,
 };
 
 export const ctGetFileKeyAPI = {
-  API_OPERATING_NOTICE_GSM: (id: string, name: string) => `${PREFIX_API_FILE_STORE}/file-key/${id}/${name}`,
+  API_OPERATING_NOTICE_GSM: (id: string, name: string) =>
+    `${PREFIX_API_FILE_STORE}/file-key/${id}/${name}`,
 };

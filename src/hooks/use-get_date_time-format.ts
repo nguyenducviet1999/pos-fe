@@ -13,7 +13,8 @@ export const useGetDateTimeFormat = () => {
   const translate = useTranslation().t;
   const dateTimeFormat: DateTimeFormatData = useMemo(() => {
     return {
-      DATE_TIME: translate("global.date_format.DATE_TIME") || "YYYY.MM.DD HH:mm:ss",
+      DATE_TIME:
+        translate("global.date_format.DATE_TIME") || "YYYY.MM.DD HH:mm:ss",
       TIME: translate("global.date_format.TIME"),
       DATE_1: translate("global.date_format.DATE_1"),
       DATE_2: translate("global.date_format.DATE_2"),

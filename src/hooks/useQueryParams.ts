@@ -6,7 +6,10 @@ import { createQueryString, queryStringToObject } from "@src/utils";
 export const useQueryParams = () => {
   const { search, pathname } = useLocation();
   const navigate = useNavigate();
-  const queryParams = React.useMemo(() => queryStringToObject(search), [search]);
+  const queryParams = React.useMemo(
+    () => queryStringToObject(search),
+    [search],
+  );
 
   const setQueryParams = (queryObj: any, replace = true) => {
     const filters: any = { ...queryObj };

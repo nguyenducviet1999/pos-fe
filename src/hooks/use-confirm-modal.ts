@@ -8,5 +8,12 @@ export const useConfirmModal = <T = undefined>(initData?: T) => {
   const onClose = () => {
     setData(undefined);
   };
-  return { isOpen: !!data, data, onOpen, onClose, isConfirmLoading, setIsConfirmLoading };
+  return {
+    isOpen: !!data,
+    data,
+    onOpen,
+    onClose,
+    isConfirmLoading,
+    setIsConfirmLoading,
+  };
 };

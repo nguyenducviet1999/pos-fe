@@ -4,7 +4,8 @@ const checkNotEmptyForHtmlContent = (htmlContent: string) => {
   const textContent = body?.textContent || "";
   const trimmedContent = textContent?.trim();
   // trimmedContent length > 0 or have tag img, video, audio, iframe
-  const hasMediaContent = Array.from(body?.querySelectorAll("img, video, audio, iframe")).length > 0;
+  const hasMediaContent =
+    Array.from(body?.querySelectorAll("img, video, audio, iframe")).length > 0;
   return trimmedContent?.length > 0 || hasMediaContent;
 };
 

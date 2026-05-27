@@ -8,7 +8,7 @@ import { pathConstants } from "@src/router/path.constants";
 
 // const LoginPage = loadable(() => import("@src/pages/account/login"));
 // const HomePage = loadable(() => import("@src/pages/dashboard"));
-const NotFoundPage = loadable(() => import("@src/pages/not-found").then((module) => module.NotFoundPage));
+const NotFoundPage = loadable(() => import("@src/pages/not-found"));
 // ================= User Management ================
 export const pathLayout = [
   // {

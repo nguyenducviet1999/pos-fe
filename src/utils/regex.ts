@@ -1,5 +1,10 @@
-export const getRegexCheckLimitString = (limitRowLength: number, limitRows: number) => {
-  return new RegExp(`^([^\n]{1,${limitRowLength}}\n){0,${limitRows - 1}}[^\n]{0,${limitRowLength}}$`);
+export const getRegexCheckLimitString = (
+  limitRowLength: number,
+  limitRows: number,
+) => {
+  return new RegExp(
+    `^([^\n]{1,${limitRowLength}}\n){0,${limitRows - 1}}[^\n]{0,${limitRowLength}}$`,
+  );
 };
 
 // /^(|[0-9]{4})$/

@@ -1,4 +1,13 @@
-import { ArrayPath, FieldValues, Resolver, useFieldArray, UseFieldArrayReturn, useForm, UseFormProps, UseFormReturn } from "react-hook-form";
+import {
+  ArrayPath,
+  FieldValues,
+  Resolver,
+  useFieldArray,
+  UseFieldArrayReturn,
+  useForm,
+  UseFormProps,
+  UseFormReturn,
+} from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
@@ -11,8 +20,13 @@ type ReturnType<T extends FieldValues> = {
   formArray: UseFieldArrayReturn<T, ArrayPath<T>, "id">;
 };
 
-export function useCustomForm<T extends FieldValues>(schema?: yup.ObjectSchema<T>, options?: FormOptions<T>): ReturnType<T> {
-  const resolver = (schema ? yupResolver(schema) : undefined) as unknown as Resolver<T>;
+export function useCustomForm<T extends FieldValues>(
+  schema?: yup.ObjectSchema<T>,
+  options?: FormOptions<T>,
+): ReturnType<T> {
+  const resolver = (schema
+    ? yupResolver(schema)
+    : undefined) as unknown as Resolver<T>;
   const form = useForm<T>({
     resolver,
     mode: options?.mode || "all",

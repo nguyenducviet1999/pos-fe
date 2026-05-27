@@ -7,7 +7,10 @@ export enum EnumOptionSort {
   DESC = "desc",
 }
 
-export const useGetOption = (optionData: { label: any; value: any; disabled?: any }[], sort?: EnumOptionSort) => {
+export const useGetOption = (
+  optionData: { label: any; value: any; disabled?: any }[],
+  sort?: EnumOptionSort,
+) => {
   const translate = useTranslation().t;
   const options = useMemo(() => {
     const result = getOptionsByOptionData(optionData, translate);

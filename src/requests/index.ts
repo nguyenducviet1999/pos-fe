@@ -1,14 +1,22 @@
-import { translate } from "@src/locales";
-import { notification } from "antd";
+import { translate } from "@src/i18n";
+// import { notification } from "antd";
 import axios, { AxiosError, AxiosResponse, HttpStatusCode } from "axios";
 import i18next from "i18next";
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
-import { getSessionId, removeSessionId, saveSessionId } from "@src/requests/token";
+import {
+  getSessionId,
+  removeSessionId,
+  saveSessionId,
+} from "@src/requests/token";
 import { getTimezoneOffsetHHMM } from "@src/utils";
 
 import { loginMiddleware } from "./api/account/login";
-import { getRefreshToken, removeRefreshToken, saveRefreshToken } from "./refresh-token";
+import {
+  getRefreshToken,
+  removeRefreshToken,
+  saveRefreshToken,
+} from "./refresh-token";
 
 let isRefreshing = false;
 const CODE_EXCEPTION_LIST = [
@@ -111,17 +119,24 @@ const onResponseError = (err: AxiosError<any>) => {
   }
   if (
     err.config?.url === loginMiddleware.OAUTH_URL &&
-    (status === HttpStatusCode.Unauthorized || status === HttpStatusCode.Forbidden || status === HttpStatusCode.Locked)
+    (status === HttpStatusCode.Unauthorized ||
+      status === HttpStatusCode.Forbidden ||
+      status === HttpStatusCode.Locked)
   ) {
     return Promise.reject(err);
   } else if (err.config?.url === loginMiddleware.OAUTH_URL) {
-    notification.error({ message: translate("error.UNKNOWN_ERROR").toString() });
+    notification.error({
+      message: translate("error.UNKNOWN_ERROR").toString(),
+    });
     return;
   }
   const messageError = err.response?.data;
   const messError = `error.${messageError?.code}`;
   const existErrorMess = i18next.exists(messError);
-  const badRequestMessage = err.response?.status === HttpStatusCode.BadRequest ? err.response?.data?.message : "";
+  const badRequestMessage =
+    err.response?.status === HttpStatusCode.BadRequest
+      ? err.response?.data?.message
+      : "";
 
   if (CODE_EXCEPTION_LIST.includes(messageError)) {
     return Promise.reject(messageError);
@@ -145,7 +160,9 @@ const onResponseError = (err: AxiosError<any>) => {
   if (badRequestMessage) {
     notification.error({ message: badRequestMessage });
   } else {
-    notification.error({ message: translate("error.UNKNOWN_ERROR").toString() });
+    notification.error({
+      message: translate("error.UNKNOWN_ERROR").toString(),
+    });
   }
   return Promise.reject(err);
 };

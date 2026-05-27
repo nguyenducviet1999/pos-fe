@@ -58,18 +58,24 @@ export const JAPAN_TIME_ZONE = "Asia/Tokyo";
 //   return current && current > dayjs().endOf("day");
 // };
 
-export const renderDateTime = (dateTime?: string, format: string = FORMAT_DATE.MONTH_DAY_YEAR) => {
+export const renderDateTime = (
+  dateTime?: string,
+  format: string = FORMAT_DATE.MONTH_DAY_YEAR,
+) => {
   if (!dateTime) return "";
   return dayjs(dateTime).format(format);
 };
 
 export const handleChangeDateTime = (date: any, field: any) => {
-  const newDate = date && date !== "" ? date.format(FORMAT_DATE.NORMAL_DATE_TIME) : "";
+  const newDate =
+    date && date !== "" ? date.format(FORMAT_DATE.NORMAL_DATE_TIME) : "";
   field.onChange(newDate);
 };
 // =========================
 export const handleGetNewDate = (date: any, value: any, format = "") => {
-  const newDate = value ? dayjs(value)?.year(date?.year())?.month(date?.month())?.date(date?.date()) : date;
+  const newDate = value
+    ? dayjs(value)?.year(date?.year())?.month(date?.month())?.date(date?.date())
+    : date;
   return format ? newDate.format(format) : newDate.toString();
 };
 
@@ -78,7 +84,9 @@ export const handleChangeDate = (date: any, field: any, format = "") => {
   field.onChange(newValue);
 };
 export const handleGetNewTime = (date: any, value: any, format = "") => {
-  const newDate = value ? dayjs(value)?.hour(date?.hour())?.minute(date?.minute()) : date;
+  const newDate = value
+    ? dayjs(value)?.hour(date?.hour())?.minute(date?.minute())
+    : date;
   return format ? newDate.format(format) : newDate.toString();
 };
 
@@ -96,7 +104,12 @@ export const handleGetNewDateV1 = (
   },
   format = "",
 ) => {
-  const newDate = value ? newDayjs(value, timezoneConfig)?.year(date?.year())?.month(date?.month())?.date(date?.date()) : date;
+  const newDate = value
+    ? newDayjs(value, timezoneConfig)
+        ?.year(date?.year())
+        ?.month(date?.month())
+        ?.date(date?.date())
+    : date;
   // chuyển đổi về múi server trước khi trả về
   newDate.tz(timezoneConfig?.serverTimezone || BASE_TIME_ZONE);
   return format ? newDate.format(format) : newDate.toString();
@@ -111,7 +124,12 @@ export const handleChangeDateV1 = (
   },
   format = "",
 ) => {
-  const newValue = handleGetNewDateV1(date, field.value, timezoneConfig, format);
+  const newValue = handleGetNewDateV1(
+    date,
+    field.value,
+    timezoneConfig,
+    format,
+  );
   field.onChange(newValue);
 };
 
@@ -124,7 +142,11 @@ export const handleGetNewTimeV1 = (
   },
   format = "",
 ) => {
-  const newDate = value ? newDayjs(value, timezoneConfig)?.hour(date?.hour())?.minute(date?.minute()) : date;
+  const newDate = value
+    ? newDayjs(value, timezoneConfig)
+        ?.hour(date?.hour())
+        ?.minute(date?.minute())
+    : date;
   // chuyển đổi về múi server trước khi trả về
   newDate.tz(timezoneConfig?.serverTimezone || BASE_TIME_ZONE);
   return format ? newDate.format(format) : newDate.toString();
@@ -139,13 +161,23 @@ export const handleChangeTimeV1 = (
   },
   format = "",
 ) => {
-  const newValue = handleGetNewTimeV1(date, field.value, timezoneConfig, format);
+  const newValue = handleGetNewTimeV1(
+    date,
+    field.value,
+    timezoneConfig,
+    format,
+  );
   field.onChange(newValue);
 };
 
 // =========================
 
-export const convertDateTimeWithTimeZone = (data: { dateTime: string; toTimezone: string; fromTimezone?: string; format?: string }) => {
+export const convertDateTimeWithTimeZone = (data: {
+  dateTime: string;
+  toTimezone: string;
+  fromTimezone?: string;
+  format?: string;
+}) => {
   if (!data.dateTime) return "";
   const dateTime = data.dateTime ?? "";
   const fromTimezone = data.fromTimezone ?? BASE_TIME_ZONE;
@@ -201,7 +233,11 @@ export const listHoursDisabled = (value: Dayjs, isAfter?: boolean) => {
   return hours;
 };
 
-export const listMinutesDisabled = (hour: number, value: Dayjs, isAfter?: boolean) => {
+export const listMinutesDisabled = (
+  hour: number,
+  value: Dayjs,
+  isAfter?: boolean,
+) => {
   let hourStamp;
   let startMinuteStamp = 0;
   let endMinuteStamp = 60;
@@ -223,7 +259,11 @@ export const listMinutesDisabled = (hour: number, value: Dayjs, isAfter?: boolea
   return minutes;
 };
 
-export const listHoursDisabledV2 = (value: Dayjs, maxValue?: Dayjs, minValue?: Dayjs) => {
+export const listHoursDisabledV2 = (
+  value: Dayjs,
+  maxValue?: Dayjs,
+  minValue?: Dayjs,
+) => {
   let startStamp = 0;
   let endStamp = 23;
   const dateTimeMaxValue = maxValue;
@@ -245,7 +285,11 @@ export const listHoursDisabledV2 = (value: Dayjs, maxValue?: Dayjs, minValue?: D
   return hours;
 };
 
-export const listMinutesDisabledV2 = (value: Dayjs, maxValue?: Dayjs, minValue?: Dayjs) => {
+export const listMinutesDisabledV2 = (
+  value: Dayjs,
+  maxValue?: Dayjs,
+  minValue?: Dayjs,
+) => {
   let startMinuteStamp = 0;
   let endMinuteStamp = 59;
   if (!maxValue && !minValue) return [];

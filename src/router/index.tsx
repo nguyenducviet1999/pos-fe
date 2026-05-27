@@ -1,5 +1,9 @@
 import React, { Suspense } from "react";
-import { Route, Routes as RoutesWrapper, unstable_HistoryRouter as HistoryBrowerRouter } from "react-router-dom";
+import {
+  Route,
+  Routes as RoutesWrapper,
+  unstable_HistoryRouter as HistoryBrowerRouter,
+} from "react-router-dom";
 // import { Spin } from "antd";
 import { Spinner } from "@src/components/ui/spinner";
 
@@ -15,7 +19,11 @@ export const RouteLayout: React.FC = () => {
         <Suspense fallback={<Spinner />}>
           <RoutesWrapper>
             {pathLayout.map((item) => (
-              <Route key={item.path?.toString()} path={item.path} element={<PermissionRoute {...item} />} />
+              <Route
+                key={item.path?.toString()}
+                path={item.path}
+                element={<PermissionRoute {...item} />}
+              />
             ))}
           </RoutesWrapper>
         </Suspense>

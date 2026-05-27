@@ -27,4 +27,5 @@ dist-ssr
 # file
 /build
 yarn-error.log*
+.yarn
 .env

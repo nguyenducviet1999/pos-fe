@@ -1,12 +1,12 @@
-import { useState } from 'react'
-import './App.css'
-import { HelmetProvider } from 'react-helmet-async'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { I18nextProvider } from 'react-i18next'
+import { useState } from "react";
+import "./App.css";
+import { HelmetProvider } from "react-helmet-async";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { I18nextProvider } from "react-i18next";
 // import { ConfigProvider } from 'antd'
 // import { PALETTE } from '@src/constants/palette'
-import i18nInitNext from '@src/i18n'
-import RouteLayout from './router'
+import i18nInitNext from "@src/i18n";
+import RouteLayout from "./router";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,7 +18,7 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   return (
     <HelmetProvider>
@@ -54,12 +54,12 @@ function App() {
               },
             }}
           > */}
-            <RouteLayout />
+          <RouteLayout />
           {/* </ConfigProvider> */}
         </I18nextProvider>
       </QueryClientProvider>
     </HelmetProvider>
-  )
+  );
 }
 
-export default App
+export default App;

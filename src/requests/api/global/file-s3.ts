@@ -35,18 +35,24 @@ const uploadFile = async (
       formData.append(keyItem, objectFormData[keyItem]);
     });
   }
-  const response = await axios.post<IRes<IFileS3Info>>(uploadPostAPI, formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
+  const response = await axios.post<IRes<IFileS3Info>>(
+    uploadPostAPI,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      onUploadProgress,
+      onDownloadProgress,
     },
-    onUploadProgress,
-    onDownloadProgress,
-  });
+  );
   return response.data;
 };
 
 const deleteFile = async (id: number) => {
-  const response = await axios.delete<IRes<number>>(`${PREFIX_API_FILE_STORE}/${id}`);
+  const response = await axios.delete<IRes<number>>(
+    `${PREFIX_API_FILE_STORE}/${id}`,
+  );
   return response.data;
 };
 

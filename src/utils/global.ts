@@ -35,7 +35,9 @@ export const queryStringToObject = (queryString = "") => {
       .forEach((itemString) => {
         const [itemKey, itemValue] = itemString.split("=");
 
-        const value = keyWithNumberValueList.includes(itemKey) ? +itemValue : itemValue;
+        const value = keyWithNumberValueList.includes(itemKey)
+          ? +itemValue
+          : itemValue;
 
         if (queryObject[itemKey]) {
           if (Array.isArray(queryObject[itemKey])) {
@@ -52,10 +54,19 @@ export const queryStringToObject = (queryString = "") => {
 
 export const createQueryString = (queryObject: any) => {
   const queryString = Object.keys(queryObject)
-    .filter((key) => queryObject[key] && !(Array.isArray(queryObject[key]) && !queryObject[key].length))
+    .filter(
+      (key) =>
+        queryObject[key] &&
+        !(Array.isArray(queryObject[key]) && !queryObject[key].length),
+    )
     .map((key) => {
       return Array.isArray(queryObject[key])
-        ? queryObject[key].map((item: any) => `${encodeURIComponent(key)}=${encodeURIComponent(item)}`).join("&")
+        ? queryObject[key]
+            .map(
+              (item: any) =>
+                `${encodeURIComponent(key)}=${encodeURIComponent(item)}`,
+            )
+            .join("&")
         : `${encodeURIComponent(key)}=${encodeURIComponent(queryObject[key])}`;
     })
     .join("&");
@@ -63,15 +74,25 @@ export const createQueryString = (queryObject: any) => {
 };
 
 // getNumericalOrder function by index, page, size
-export const getNumericalOrder = (index: number, page?: number, size?: number) => {
+export const getNumericalOrder = (
+  index: number,
+  page?: number,
+  size?: number,
+) => {
   return (size || 10) * ((page || 1) - 1) + index + 1;
 };
 // getNumericalOrder DES function by index, page, size, total
-export const getNumericalOrderDes = (index: number, page?: number, size?: number, total = 0) => {
+export const getNumericalOrderDes = (
+  index: number,
+  page?: number,
+  size?: number,
+  total = 0,
+) => {
   return total - ((size || 10) * ((page || 1) - 1) + index);
 };
 
-export const isNullOrUndefined = (value: any) => value === null || value === undefined;
+export const isNullOrUndefined = (value: any) =>
+  value === null || value === undefined;
 
 export const getOrdinalNumber = (number: number) => {
   const suffixes = ["th", "st", "nd", "rd"];
@@ -88,7 +109,10 @@ export const getOrdinalNumber = (number: number) => {
   return `${number}${suffix}`;
 };
 // get Options by mapData
-export const getOptionsByMapData = (mapDataInput: any, translate: TFunction) => {
+export const getOptionsByMapData = (
+  mapDataInput: any,
+  translate: TFunction,
+) => {
   const mapData = mapDataInput || {};
   return Object.keys(mapData).map((key) => {
     let labelInput = mapData?.[key]?.label ?? "";
@@ -102,7 +126,10 @@ export const getOptionsByMapData = (mapDataInput: any, translate: TFunction) => 
   });
 };
 
-export const getOptionsByOptionData = (inputOptionData: { label: any; value: any; disabled?: any }[], translate: TFunction) => {
+export const getOptionsByOptionData = (
+  inputOptionData: { label: any; value: any; disabled?: any }[],
+  translate: TFunction,
+) => {
   const optionData = inputOptionData || [];
   return optionData.map((item) => {
     let labelInput = item?.label ?? "";
@@ -117,7 +144,11 @@ export const getOptionsByOptionData = (inputOptionData: { label: any; value: any
   });
 };
 
-export const getLabelInputOptionByValue = (value: any, inputOptionData: { label: any; value: any }[], translate?: TFunction) => {
+export const getLabelInputOptionByValue = (
+  value: any,
+  inputOptionData: { label: any; value: any }[],
+  translate?: TFunction,
+) => {
   const optionData = inputOptionData || [];
   const foundOption = optionData.find((item) => item.value === value);
   if (translate) {
@@ -135,21 +166,28 @@ export const getJWTPayload = (accessToken: string) => {
 };
 
 export const groupListBy = (list: any[], getKey: (item: any) => string) => {
-  return list.reduce((acc, item) => {
-    const key = getKey(item);
-    if (!acc[key]) {
-      acc[key] = [];
-    }
-    acc[key].push(item);
-    return acc;
-  }, {} as Record<string, any[]>);
+  return list.reduce(
+    (acc, item) => {
+      const key = getKey(item);
+      if (!acc[key]) {
+        acc[key] = [];
+      }
+      acc[key].push(item);
+      return acc;
+    },
+    {} as Record<string, any[]>,
+  );
 };
 
 export const newFakeId = () => {
   return Math.abs(new Date().getTime()) * -1;
 };
 
-export const replaceExtensionFile = (fileName: string, oldExtension: string, newExtension: string) => {
+export const replaceExtensionFile = (
+  fileName: string,
+  oldExtension: string,
+  newExtension: string,
+) => {
   return fileName.replace(new RegExp(`\\${oldExtension}$`, "i"), newExtension);
 };
 
@@ -172,7 +210,11 @@ export const getAvailableSystemByBit = (
   }[],
   system: number,
 ) => {
-  return (optionsData.filter((option) => checkBitValue(system, option.value)) || [])?.map((s) => s.label).join(", ");
+  return (
+    optionsData.filter((option) => checkBitValue(system, option.value)) || []
+  )
+    ?.map((s) => s.label)
+    .join(", ");
 };
 
 export const preloadImage = (src: string): Promise<string> => {
@@ -185,10 +227,18 @@ export const preloadImage = (src: string): Promise<string> => {
   });
 };
 
-export const checkFunctionPermission = (permissions: string[], requiredFunctionPermission: string) => {
-  return permissions.some((permission) => permission.startsWith(requiredFunctionPermission));
+export const checkFunctionPermission = (
+  permissions: string[],
+  requiredFunctionPermission: string,
+) => {
+  return permissions.some((permission) =>
+    permission.startsWith(requiredFunctionPermission),
+  );
 };
 
-export const checkPermission = (permissions: string[], requiredPermission: string) => {
+export const checkPermission = (
+  permissions: string[],
+  requiredPermission: string,
+) => {
   return permissions.includes(requiredPermission);
 };

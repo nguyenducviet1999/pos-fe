@@ -2,7 +2,8 @@ import dayjs from "dayjs";
 
 // Serialize: convert Object(array(Object)) have field type Day.js -> ISO String
 export const serializeDayjs = (data: any): any => {
-  const isTypeDayjs = !!data && typeof data === "object" && data.$y !== undefined;
+  const isTypeDayjs =
+    !!data && typeof data === "object" && data.$y !== undefined;
   if (isTypeDayjs) {
     return data.toISOString();
   }
@@ -10,7 +11,9 @@ export const serializeDayjs = (data: any): any => {
     return data.map(serializeDayjs);
   }
   if (typeof data === "object" && data !== null) {
-    return Object.fromEntries(Object.entries(data).map(([key, value]) => [key, serializeDayjs(value)]));
+    return Object.fromEntries(
+      Object.entries(data).map(([key, value]) => [key, serializeDayjs(value)]),
+    );
   }
   return data;
 };
@@ -26,7 +29,12 @@ export const deserializeDayjs = (data: any): any => {
     return data.map(deserializeDayjs);
   }
   if (typeof data === "object" && !!data) {
-    return Object.fromEntries(Object.entries(data).map(([key, value]) => [key, deserializeDayjs(value)]));
+    return Object.fromEntries(
+      Object.entries(data).map(([key, value]) => [
+        key,
+        deserializeDayjs(value),
+      ]),
+    );
   }
   return data;
 };

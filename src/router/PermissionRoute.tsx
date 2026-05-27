@@ -36,12 +36,18 @@ const RouteComponent: React.FC<IPermissionRouteProps> = ({
   return <ComponentRender />;
 };
 
-const PermissionRoute: React.FC<IPermissionRouteProps> = ({ isPrivate = false, isAuth = false, ...props }: IPermissionRouteProps) => {
+const PermissionRoute: React.FC<IPermissionRouteProps> = ({
+  isPrivate = false,
+  isAuth = false,
+  ...props
+}: IPermissionRouteProps) => {
   const isAuthenticated = getSessionId();
   // useFetchUserInfor(!!isAuthenticated);
 
-  if (!isAuthenticated && isPrivate) return <Navigate to={pathConstants.LOGIN} replace />;
-  if (isAuthenticated && isAuth) return <Navigate to={pathConstants.HOME} replace />;
+  if (!isAuthenticated && isPrivate)
+    return <Navigate to={pathConstants.LOGIN} replace />;
+  if (isAuthenticated && isAuth)
+    return <Navigate to={pathConstants.HOME} replace />;
 
   return <RouteComponent {...props} />;
 };

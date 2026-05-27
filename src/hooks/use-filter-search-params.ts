@@ -5,14 +5,16 @@ type IObjectKeys = {
   [key: string]: any;
 };
 
-export const useFilterBarSearchParams = <T extends IObjectKeys>(dataForTypes: T): [T, (newFilter: T) => void] => {
+export const useFilterBarSearchParams = <T extends IObjectKeys>(
+  dataForTypes: T,
+): [T, (newFilter: T) => void] => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const keys = useMemo(() => Object.keys(dataForTypes), [dataForTypes]);
 
   const [filter, setFilter] = useState<T>();
 
-  const ref = useRef();
+  const ref = useRef(undefined);
 
   const setFilterSearchParams = (newParams: T) => {
     for (const key of keys) {

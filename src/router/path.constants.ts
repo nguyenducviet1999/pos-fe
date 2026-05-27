@@ -41,7 +41,8 @@ export const pathConstants = {
   STATISTIC_SUMMARY: "/statistic-summary",
   STATISTIC_SUMMARY_BY_SERVICE: "/statistic-summary/by-service",
   STATISTIC_SUMMARY_BY_EMPLOYEE: "/statistic-summary/by-employee",
-  STATISTIC_SUMMARY_BY_EMPLOYEE_DISCOUNT: "/statistic-summary/by-employee-discount",
+  STATISTIC_SUMMARY_BY_EMPLOYEE_DISCOUNT:
+    "/statistic-summary/by-employee-discount",
   STATISTIC_SUMMARY_BY_PAYMENT_METHOD: "/statistic-summary/by-payment-method",
   STATISTIC_SUMMARY_BY_TIP: "/statistic-summary/by-tip",
   // statistic by date

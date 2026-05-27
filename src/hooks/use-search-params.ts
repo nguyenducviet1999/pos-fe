@@ -10,7 +10,10 @@ interface IObjectOptionSearch {
   isSearch?: boolean;
 }
 
-export const useUpdateSearchParams = <T>(keysTypeArray?: string[], keysTypeNumber?: string[]) => {
+export const useUpdateSearchParams = <T>(
+  keysTypeArray?: string[],
+  keysTypeNumber?: string[],
+) => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const isFirstRender = useRef(true);
@@ -46,10 +49,16 @@ export const useUpdateSearchParams = <T>(keysTypeArray?: string[], keysTypeNumbe
     setSearchParamsObject(dataParam);
   }, [searchParams, isFirstRender]);
 
-  const redirectUpdateSearchParams = (newParams: IObjectKeys, options?: IObjectOptionSearch) => {
+  const redirectUpdateSearchParams = (
+    newParams: IObjectKeys,
+    options?: IObjectOptionSearch,
+  ) => {
     // For redirect
     if (options?.pathname) {
-      const pathSearch = { pathname: options?.pathname, ...(newParams && { search: new URLSearchParams(newParams).toString() }) };
+      const pathSearch = {
+        pathname: options?.pathname,
+        ...(newParams && { search: new URLSearchParams(newParams).toString() }),
+      };
       navigate(pathSearch, { replace: options?.replace });
       return;
     }
@@ -60,7 +69,11 @@ export const useUpdateSearchParams = <T>(keysTypeArray?: string[], keysTypeNumbe
     };
     Object.keys(objectData).forEach((element) => {
       const dataElement = objectData[element];
-      if (dataElement === undefined || dataElement === null || dataElement === "") {
+      if (
+        dataElement === undefined ||
+        dataElement === null ||
+        dataElement === ""
+      ) {
         searchParams.delete(element);
         return;
       }
@@ -77,5 +90,9 @@ export const useUpdateSearchParams = <T>(keysTypeArray?: string[], keysTypeNumbe
     setSearchParams(searchParams, { replace: true });
   };
 
-  return { searchParamsObject, setSearchParamsObject, redirectUpdateSearchParams };
+  return {
+    searchParamsObject,
+    setSearchParamsObject,
+    redirectUpdateSearchParams,
+  };
 };

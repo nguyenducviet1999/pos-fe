@@ -30,7 +30,8 @@ export const lazyLoad = <K extends {}>(
   let lazyCustom: () => Promise<TypePromise<K>> = importFunction;
 
   if (useFunction) {
-    lazyCustom = () => importFunction().then((module) => ({ default: useFunction(module) }));
+    lazyCustom = () =>
+      importFunction().then((module) => ({ default: useFunction(module) }));
   }
 
   const LazyComponent = lazyWithRetry(lazyCustom);
