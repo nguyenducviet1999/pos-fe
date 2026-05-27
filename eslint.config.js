@@ -57,7 +57,7 @@ export default defineConfig([
         document: "readonly",
         context: "readonly",
         JSX: "readonly",
-        __APP_ENV__: "readonly",
+        APP_ENV: "readonly",
       },
     },
   },

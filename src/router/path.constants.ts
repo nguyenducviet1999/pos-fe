@@ -3,6 +3,7 @@ export const pathConstants = {
   HOME: "/",
   LOGIN: "/login",
   SIGNUP: "/signup",
+  SELECT_STORE: "/select-store",
   // ================= page =================
   CREATE_QUOTE: "/create-quote",
   // DETAIL_QUOTE: "/quote/:id",

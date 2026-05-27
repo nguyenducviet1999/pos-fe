@@ -1,0 +1,41 @@
+---
+description: React component conventions, Tailwind v4 + shadcn styling, cn() and i18n
+globs: src/**/*.tsx
+alwaysApply: false
+---
+
+# React Components
+
+## Component pattern
+
+- Functional components + hooks only. No class components except special cases like `ErrorBoundary`.
+- Type props explicitly; prefer `React.ComponentProps<"tag">` for wrapper elements (see `src/components/ui/table.tsx`).
+- Named export for shadcn-style components; default export for page components (see `src/pages/not-found/index.tsx`).
+- Lazy-load pages with `loadable(() => import("@src/pages/..."))` or `lazyLoad` helper in `src/utils/loadable.tsx`.
+
+## Styling — Tailwind v4 + shadcn
+
+- Always merge classes with `cn()` from `@src/lib/utils` (clsx + tailwind-merge):
+
+```tsx
+import { cn } from "@src/lib/utils";
+
+function Spinner({ className, ...props }: React.ComponentProps<"svg">) {
+  return <Loader2Icon className={cn("size-4 animate-spin", className)} {...props} />;
+}
+```
+
+- Use design tokens / CSS variables declared in `src/index.css` (e.g. `bg-background`, `text-foreground`, `border-border`, `bg-muted/50`). Don't hardcode hex if a token exists.
+- Dark mode: use `dark:` variant (custom `&:is(.dark *)` configured).
+- Icons: `lucide-react`, sizing via Tailwind `size-*`.
+
+## i18n
+
+- Use `useTranslation()` in components; use `translate(...)` from `@src/i18n` in non-component code (interceptor, util).
+- Keys are dot-namespaced: `pages.error_boundary.HAVE_PROBLEM`, `commons.ACTIVE`, `error.UNKNOWN_ERROR`.
+- Don't hardcode display strings (EN/VI) in JSX for UI text — add keys to `src/i18n/locales/en.json` and `vi.json`.
+
+## Notification
+
+- Use `toast` from `sonner` (`toast.success`, `toast.error`, ...). `<Toaster />` is mounted in `src/main.tsx`.
+- Don't use `alert()` or antd `notification` (antd has been removed).

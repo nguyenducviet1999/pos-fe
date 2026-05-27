@@ -1,0 +1,120 @@
+---
+description: Redux store structure and how to add a new store key
+globs: src/stores/**/*.{ts,tsx}, src/hooks/use-get-redux-stores.ts
+alwaysApply: false
+---
+
+# Redux Store
+
+Store uses Redux Toolkit with a **dynamic slice factory** (`getSlice`) instead of a per-feature slice pattern. All reducers are auto-generated from `EnumStoreKeys` — no manual registration required.
+
+## Folder layout — `src/stores/`
+
+```
+src/stores/
+  root-stores.ts          // configureStore + auto-builds reducers from EnumStoreKeys
+  redux-slide.tsx         // getSlice(key, initialState) factory — DO NOT touch when adding a new store
+  stores.constants.ts     // EnumStoreKeys + storesInitialState (entry point for new stores)
+  models/
+    stores-<feature>.model.ts   // EnumStores<Feature>Properties + Stores<Feature>Model
+  index.ts                // re-exports root-stores only
+```
+
+> Note: the file should be named `redux-slice.tsx` but it is currently `redux-slide.tsx` (typo). Keep it as-is — many places already import from this path.
+
+## Adding a new store (3 steps, NO per-feature slice/middleware)
+
+### 1. Create the model — `src/stores/models/stores-<feature>.model.ts`
+
+- Declare `EnumStores<Feature>Properties` for all property keys (string enum).
+- Declare interface `Stores<Feature>Model` using `[EnumStores<Feature>Properties.X]` as keys.
+
+```ts
+// src/stores/models/stores-user-info.model.ts
+export enum EnumStoresUserInfoProperties {
+  ID = "id",
+  TITLE = "title",
+}
+
+export interface StoresUserInfoModel {
+  [EnumStoresUserInfoProperties.ID]: number;
+  [EnumStoresUserInfoProperties.TITLE]: string;
+}
+```
+
+### 2. Register the key + initial state — `src/stores/stores.constants.ts`
+
+- Add a new member to `EnumStoreKeys`.
+- Add the matching initial state to `storesInitialState`, using the property enum as keys (never hardcode raw strings).
+
+```ts
+export enum EnumStoreKeys {
+  USER_INFO = "user_info",
+  // FOO_BAR = "foo_bar",   // add here
+}
+
+export const storesInitialState: Record<EnumStoreKeys, any> = {
+  [EnumStoreKeys.USER_INFO]: {
+    [EnumStoresUserInfoProperties.ID]: 1,
+    [EnumStoresUserInfoProperties.TITLE]: "okoko",
+  },
+};
+```
+
+### 3. Done
+
+You do NOT need to edit `root-stores.ts`: `getAllReducers()` iterates `Object.values(EnumStoreKeys)` and calls `getSlice(key, storesInitialState[key])` to produce a reducer keyed by the same store name.
+
+## Consuming a store — the `useGetReduxStores` hook
+
+Do NOT import raw `useSelector` / `useDispatch`, and do NOT touch slices directly. Always go through `useGetReduxStores`:
+
+```tsx
+import { useGetReduxStores } from "@src/hooks/use-get-redux-stores";
+import { EnumStoreKeys } from "@src/stores/stores.constants";
+import { EnumStoresUserInfoProperties } from "@src/stores/models/stores-user-info.model";
+
+const userInfoStore = useGetReduxStores(EnumStoreKeys.USER_INFO);
+
+// Read — always use the property enum, never hardcode "id" / "title"
+const id = userInfoStore?.getData(EnumStoresUserInfoProperties.ID);
+const title = userInfoStore?.getData(EnumStoresUserInfoProperties.TITLE);
+
+// Write — payload is a partial object shaped like Stores<Feature>Model
+userInfoStore?.setData({
+  [EnumStoresUserInfoProperties.ID]: 9,
+  [EnumStoresUserInfoProperties.TITLE]: "ok9",
+});
+```
+
+- `getData(key)` supports dot-notation paths (e.g. `"profile.address.city"`) and returns `undefined` if any segment is missing.
+- `setData(payload)` is implemented by the `setData` reducer in `redux-slide.tsx`: it iterates `Object.keys(state)` and assigns `state[key] = action.payload[key]`. This means **any key missing in the payload becomes `undefined`**. Always pass the full property set, or merge with current state before dispatching.
+
+## Required conventions
+
+- Store key: `EnumStoreKeys.<UPPER_SNAKE> = "<lower_snake>"` (e.g. `USER_INFO = "user_info"`).
+- Model file: `stores-<feature>.model.ts` inside `src/stores/models/`.
+- Property enum: `EnumStores<PascalFeature>Properties` (string enum, lowercase values).
+- State interface: `Stores<PascalFeature>Model`.
+- NEVER hardcode property strings — always use `EnumStores<Feature>Properties.X`.
+- DO NOT create per-feature `redux-slice.ts` / `middleware.ts` / `data-type.ts` files in the old pattern — that pattern has been replaced.
+- `src/stores/index.ts` is a barrel only: `export * from "./root-stores"`. No logic.
+
+## Typed selector / dispatch (when needed)
+
+`root-stores.ts` still exports:
+
+- `store`, `RootState`, `AppDispatch`
+- `useAppDispatch`, `useAppSelector` (typed wrappers around `react-redux`)
+- `allReducerMapData` — a `EnumStoreKeys → { setData, reducer }` map (used internally by `useGetReduxStores`; do not call from components).
+
+Components should normally only need `useGetReduxStores`. Fall back to `useAppSelector` / `useAppDispatch` only for special cases not covered by `getData` / `setData` (e.g. selecting from multiple stores at once with custom memoization).
+
+## Thunks / side-effects
+
+The per-feature `middleware.ts` thunk pattern from the old rule is gone. Place side-effects (API calls) in:
+
+- `@tanstack/react-query` for fetching/caching (preferred).
+- Or plain functions calling `src/requests/api/...`, then sync the result into the store via `setData(...)` from a component/hook.
+
+Never call `axios` directly — always go through `src/requests/api/<domain>`.

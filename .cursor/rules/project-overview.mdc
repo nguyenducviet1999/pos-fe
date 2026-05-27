@@ -1,0 +1,49 @@
+---
+description: pos-fe overview, tech stack, scripts, alias, key conventions
+alwaysApply: true
+---
+
+# pos-fe — POS Frontend
+
+React 19 + TypeScript + Vite SPA. Yarn 4 (`packageManager: yarn@4.15.0`). Use `yarn ...`, never `npm install` / `npx`.
+
+## Tech stack
+
+- UI: TailwindCSS v4 + shadcn/ui (`src/components/ui/*`) + `radix-ui` + `lucide-react`
+- State: `useState` | `@reduxjs/toolkit` + `react-redux`
+- Data: `@tanstack/react-query` + `axios` (instance: `src/requests/index.ts`)
+- Routing: `react-router-dom` v7 with `unstable_HistoryRouter`, `history` at `src/history`
+- Forms: `react-hook-form` + `yup` + `@hookform/resolvers`
+- i18n: `i18next` + `react-i18next` (locales: `en`, `vi`)
+- Date: `dayjs` (re-exported from `src/utils/datetime.ts`)
+- Code-split: `@loadable/component` or `lazyLoad` from `src/utils/loadable.tsx`
+- Toast: `sonner` (`src/components/ui/sonner.tsx`)
+- Theme: `next-themes`
+
+## Path alias
+
+Use only `@src/*` (configured in `tsconfig.app.json` + `vite.config.ts`). No relative `../../...`.
+
+```ts
+import { Spinner } from "@src/components/ui/spinner";
+import { pathConstants } from "@src/router/path.constants";
+```
+
+## `src/` structure
+
+- `components/ui/` — shadcn primitives; `components/custom/` — shared app components
+- `constants/`, `enums/`, `models/` — barrel re-export via `index.ts`
+- `hooks/` — custom hooks, grouped by domain (`form/`, `redux/`, `filter-bar/`)
+- `requests/` — axios instance + `api/<domain>/*.ts`
+- `router/` — `index.tsx`, `path-layout.ts`, `path.constants.ts`, `PermissionRoute`, `ErrorBoundary`
+- `stores/` — Redux: each feature has `index.ts`, `data-type.ts`, `redux-slice.ts`, optional `middleware.ts`
+- `utils/`, `lib/utils.ts` (only `cn` helper)
+- `pages/` — page components, lazy-loaded via `path-layout.ts`
+
+## Scripts
+
+- `yarn start` — dev (port 3000)
+- `yarn build`, `yarn preview`
+- `yarn lint`, `yarn lint:fix`, `yarn format`
+
+Husky + lint-staged run `prettier --write` and `eslint --fix` on commit. Don't bypass hooks.

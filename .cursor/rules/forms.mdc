@@ -1,0 +1,47 @@
+---
+description: Form conventions using react-hook-form + yup via useCustomForm
+globs: src/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Forms
+
+Use the `useCustomForm` wrapper at `src/hooks/form/useCustomForm.ts` instead of `useForm` directly. It pre-configures yup resolver, `mode: "all"`, `reValidateMode: "onSubmit"`, and optional `useFieldArray`.
+
+## Usage
+
+```ts
+import * as yup from "yup";
+import { useCustomForm } from "@src/hooks";
+
+interface IEmployeeForm {
+  name: string;
+  email: string;
+}
+
+const schema: yup.ObjectSchema<IEmployeeForm> = yup.object({
+  name: yup.string().required("validation.NAME_REQUIRED"),
+  email: yup.string().email("validation.EMAIL_INVALID").required(),
+});
+
+const { form } = useCustomForm<IEmployeeForm>(schema, {
+  defaultValues: { name: "", email: "" },
+});
+
+// form.control, form.handleSubmit, form.formState, ...
+```
+
+## Conventions
+
+- Place yup schema in the same file as the form, or in a sibling `schema.ts`.
+- Validation messages must be i18n keys (string), not hardcoded text — translated when rendering errors.
+- Type helpers `Shape<Fields>` and `ConditionalSchema<T>` in `src/constants/yup.constants.ts` for building schemas from interfaces.
+- Reusable regex in `src/constants/regex.constants.ts` (`regExConstants.URL_LINK`, ...).
+- Dirty check: use `useGetIsDirty(form, exceptionFields?)` from `src/hooks/form/use-get-is-dirty.ts` instead of counting `dirtyFields` manually.
+- Field array: pass `fieldArray: "<arrayPath>"` to `useCustomForm` options; use the returned `formArray`.
+
+## Search params / Filter bar
+
+- Read/write query string: `useUpdateSearchParams` (`src/hooks/use-search-params.ts`) or `useQueryParams` (`src/hooks/useQueryParams.ts`).
+- Filter bar UI: `useFilterBar(onChange, includeSearchButton?, searchParamsProp?)` from `src/hooks/filter-bar/use-filter-bar.ts`.
+- When resetting filter to re-search, let the hook set `page=1, pageSize=10` via `isSearch: true`.

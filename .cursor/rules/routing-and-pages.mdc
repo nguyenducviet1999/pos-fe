@@ -1,0 +1,54 @@
+---
+description: Routing conventions, path constants, lazy load, and permission routes
+globs: src/{router,pages}/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Routing & Pages
+
+## Path constants
+
+- All paths centralized in `src/router/path.constants.ts` (`pathConstants`). Don't scatter literal strings like `"/login"` across the code.
+- Dynamic paths use a function with default `:id`:
+
+```ts
+DETAIL_QUOTE: (id = ":id") => `/quote/${id}`,
+```
+
+Linking: `pathConstants.DETAIL_QUOTE(quoteId)`. Route declaration: `pathConstants.DETAIL_QUOTE()`.
+
+## Adding a new route
+
+1. Add a key to `pathConstants`.
+2. Create the page at `src/pages/<feature>/index.tsx` (default export).
+3. Lazy-load and register in `src/router/path-layout.ts`:
+
+```ts
+const EmployeePage = loadable(() => import("@src/pages/employee-management/employee"));
+
+export const pathLayout = [
+  // ...
+  {
+    path: pathConstants.EMPLOYEE,
+    component: EmployeePage,
+    layout: NormalLayout,
+    isPrivate: true,
+    title: "pages.title_header.EMPLOYEE",
+  },
+];
+```
+
+Entry type follows `IPermissionRouteProps` in `src/router/prop-state.type.ts`.
+
+## Permissions
+
+- `isPrivate: true` → blocks if no session; redirects to `LOGIN`.
+- `isAuth: true` → blocks if session exists; redirects to `HOME` (use for `login`, `signup`).
+- `redirectPath` → renders `<Navigate replace />`; use for catch-all or alias routes.
+- `title` is an i18n key; set via `<Helmet>` in `PermissionRoute`.
+- Only modify auth logic in `src/router/PermissionRoute.tsx`; don't check tokens per page.
+
+## Navigation
+
+- Inside components: `useNavigate()` from `react-router-dom`.
+- Outside components (util, store, request): import `history` from `@src/history` (attached to `HistoryBrowerRouter` in `src/router/index.tsx`).

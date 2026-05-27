@@ -1,0 +1,99 @@
+---
+description: i18n / translation conventions — always go through useTranslation / translate
+globs: src/**/*.{ts,tsx,json}
+alwaysApply: false
+---
+
+# i18n & Translations
+
+ALWAYS render user-facing text through the translation system. Never hardcode English/Vietnamese strings in JSX, toasts, validation messages, alerts, or error helpers.
+
+## Where to call
+
+- **Inside React components / hooks** — `const { t } = useTranslation();` then `t("commons.SIGN_IN")`.
+- **Outside components** (axios interceptor, util, store middleware, yup schema at module scope) — `import { translate } from "@src/i18n"` and call `translate("validation.EMAIL_INVALID")`.
+
+## Locale files
+
+- `src/i18n/locales/en.json` — English, primary. Used as fallback (`fallbackLng: "en"`).
+- `src/i18n/locales/vi.json` — Vietnamese, optional.
+- Default: add new keys to `en.json` only. Skip `vi.json` until the user asks for Vietnamese.
+
+## File structure
+
+The locale JSON always has two kinds of top-level groups:
+
+1. `commons` — shared, reusable text across features (button labels, generic nouns/actions). **Required, always present.**
+2. `<feature>` — one group per feature/page (`login`, `employee`, `quote`, ...). Add when the feature is built.
+
+Optional cross-cutting top-level groups (use sparingly): `validation` (yup messages), `errors` (api error map).
+
+```json
+{
+  "commons": {
+    "SIGN_IN": "Sign In",
+    "PASSWORD": "Password"
+  },
+  "login": {
+    "STAFF_LOGIN": "Staff Login",
+    "FORGOT_PASSWORD": "Forgot Password?"
+  },
+  "validation": {
+    "EMAIL_REQUIRED": "Email is required"
+  }
+}
+```
+
+## Key naming
+
+- Group name (top level) — lowercase: `commons`, `login`, `employee`, `validation`.
+- Leaf key — `UPPER_SNAKE_CASE`: `SIGN_IN`, `EMAIL_ADDRESS`, `FORGOT_PASSWORD`.
+- Value — human-readable English in sentence case (`"Sign In"`, `"Please enter a valid email"`).
+- Reuse `commons.*` before adding a feature-specific duplicate.
+
+## Interpolation
+
+Use `{{var}}` placeholders and pass values as an object:
+
+```json
+{
+  "login": {
+    "WELCOME_BACK": "Welcome back, {{name}}",
+    "COPYRIGHT": "© {{year}} SimpliNail. All rights reserved."
+  }
+}
+```
+
+```tsx
+t("login.WELCOME_BACK", { name: user.name });
+t("login.COPYRIGHT", { year: new Date().getFullYear() });
+```
+
+Never concatenate translated fragments — define the full sentence as one key with interpolation.
+
+## Validation (yup at module scope)
+
+Yup schemas run at module load, before i18n is necessarily ready. Store the **i18n key** as the yup message, then translate when rendering:
+
+```ts
+const schema = yup.object({
+  email: yup
+    .string()
+    .email("validation.EMAIL_INVALID")
+    .required("validation.EMAIL_REQUIRED"),
+});
+```
+
+```tsx
+{fieldState.error?.message && (
+  <p className="text-xs text-red-500">{t(fieldState.error.message)}</p>
+)}
+```
+
+## Don'ts
+
+- Don't hardcode display strings (`<button>Sign In</button>`). Use `t("commons.SIGN_IN")`.
+- Don't concatenate translated pieces. Use interpolation.
+- Don't call `translate(...)` at module top-level scope. Call it lazily inside a function/component.
+- Don't add a feature-specific key when `commons.*` already covers the same text.
+- Don't put translated text inside `Enum` values or constants — those should stay as keys / IDs.

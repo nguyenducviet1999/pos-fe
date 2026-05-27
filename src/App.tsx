@@ -1,5 +1,3 @@
-import { useState } from "react";
-import "./App.css";
 import { HelmetProvider } from "react-helmet-async";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { I18nextProvider } from "react-i18next";
@@ -18,8 +16,6 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>

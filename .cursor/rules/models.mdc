@@ -1,0 +1,122 @@
+---
+description: Model file structure and enum-keyed property access pattern
+globs: src/models/**/*.ts
+alwaysApply: false
+---
+
+# Models
+
+Every feature has its own folder under `src/models/<feature>/`. Inside that folder, **each model lives in its own file** named `<model>.model.ts` (lowercase, kebab-case). Each model file exports a property enum **and** an interface keyed by that enum.
+
+## Folder layout
+
+```
+src/models/
+  <feature>/
+    <model>.model.ts        // one model per file
+    index.ts                // barrel re-export (optional)
+```
+
+Example:
+
+```
+src/models/
+  person/
+    person.model.ts
+    address.model.ts
+    index.ts
+  order/
+    order.model.ts
+    order-item.model.ts
+    index.ts
+```
+
+## Required content of each `<model>.model.ts`
+
+Every model file MUST export two things:
+
+1. `EnumXProperties` — a string enum listing every property of the model. Member name in `UPPER_SNAKE_CASE`, value in `camelCase` matching the API/JSON field.
+2. `IX` — an interface using `[EnumXProperties.X]` as keys (never raw string keys).
+
+```ts
+// src/models/person/person.model.ts
+export enum EnumPersonProperties {
+  NAME = "name",
+  SEX = "sex",
+  AGE = "age",
+}
+
+export interface IPerson {
+  [EnumPersonProperties.NAME]: string;
+  [EnumPersonProperties.SEX]: "male" | "female";
+  [EnumPersonProperties.AGE]: number;
+}
+```
+
+## Consuming a model — always go through the enum
+
+When reading or writing properties on a value typed as `IX`, **always** access the field through `EnumXProperties.X`. Never hardcode the raw string key.
+
+```ts
+import { EnumPersonProperties, IPerson } from "@src/models/person/person.model";
+
+function greet(person: IPerson) {
+  // GOOD — property enum
+  const name = person[EnumPersonProperties.NAME];
+  return `Hello ${name}`;
+}
+
+function rename(person: IPerson, newName: string): IPerson {
+  return {
+    ...person,
+    [EnumPersonProperties.NAME]: newName,
+  };
+}
+```
+
+```ts
+// BAD — hardcoded string key
+const name = person.name;
+person.name = "Alice";
+```
+
+This also applies to:
+
+- `react-hook-form` field names: `register(EnumPersonProperties.NAME)`, `setValue(EnumPersonProperties.NAME, ...)`.
+- Redux store `getData` / `setData` payloads (see `redux-store` rule).
+- Table column `dataIndex`, sort keys, filter keys.
+
+## Naming conventions
+
+| Thing | Convention | Example |
+|---|---|---|
+| Feature folder | `kebab-case` | `src/models/order-item/` |
+| Model file | `<model>.model.ts` | `person.model.ts` |
+| Property enum | `EnumXProperties` | `EnumPersonProperties` |
+| Interface | `IX` (PascalCase, `I` prefix) | `IPerson`, `IOrderItem` |
+| Enum member | `UPPER_SNAKE_CASE` | `FIRST_NAME` |
+| Enum value | `camelCase`, matches API field | `"firstName"` |
+
+## Barrel `index.ts` (optional)
+
+If a feature has multiple models, add `src/models/<feature>/index.ts` and re-export everything:
+
+```ts
+// src/models/person/index.ts
+export * from "./person.model";
+export * from "./address.model";
+```
+
+Then import via the folder:
+
+```ts
+import { EnumPersonProperties, IPerson } from "@src/models/person";
+```
+
+## Rules
+
+- One model = one file. Do NOT put `IPerson` and `IOrder` in the same file.
+- File name must end with `.model.ts`.
+- Both `EnumXProperties` and `IX` MUST be exported — `IX` must use the enum as keys.
+- No raw string property access on values typed as `IX`. Always use `EnumXProperties.X`.
+- Place feature models under `src/models/<feature>/`, not flat in `src/models/`.

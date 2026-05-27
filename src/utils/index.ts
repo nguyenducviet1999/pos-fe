@@ -12,3 +12,4 @@ export * from "./regex";
 export * from "./html";
 export * from "./input";
 export * from "./validator";
+export * from "./selected-store";

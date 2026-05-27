@@ -1,25 +1,43 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import {
+  ActionCreatorWithPayload,
+  combineReducers,
+  configureStore,
+  Reducer,
+} from "@reduxjs/toolkit";
 
-import { ctEnvSite } from "@src/constants";
+// import { globalReducer } from "./global";
+import { getSlice } from "./redux-slide";
+import { EnumStoreKeys, storesInitialState } from "./stores.constants";
 
-import { globalReducer } from "./global";
-// import { tournamentReducer } from "@src/modules/gtour";
-// import { userReducer } from "@src/stores/user";
+function getAllReducers() {
+  const result: Record<
+    EnumStoreKeys,
+    {
+      setData: ActionCreatorWithPayload<any, string>;
+      reducer: Reducer<any>;
+    }
+  > = {} as Record<EnumStoreKeys, any>;
+  for (const key of Object.values(EnumStoreKeys)) {
+    result[key] = getSlice(key, storesInitialState[key]);
+  }
+  return result;
+}
 
-export const allReducers = combineReducers({
-  globalState: globalReducer,
-  // userState: userReducer,
-  // tournamentState: tournamentReducer,
-});
-
-const rootReducer = (state: any, action: any) => {
-  return allReducers(state, action);
-};
+export const allReducerMapData = getAllReducers();
+const allReducerCombineInput = Object.keys(allReducerMapData).reduce(
+  (acc, key) => {
+    acc[key as EnumStoreKeys] = allReducerMapData[key as EnumStoreKeys].reducer;
+    return acc;
+  },
+  {} as Record<EnumStoreKeys, Reducer<any>>,
+);
 
 export const store = configureStore({
-  reducer: rootReducer,
-  devTools: __APP_ENV__.DEV_MODE !== ctEnvSite.PRODUCTION,
+  reducer: combineReducers({
+    ...allReducerCombineInput,
+  }),
+  devTools: APP_ENV.MODE !== "production",
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
@@ -27,13 +45,10 @@ export const store = configureStore({
           return true; // allow all data type
         },
       },
-      // serializableCheck: false, // Don't show warning if data is type dayjs
     }),
 });
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;
 
 export const useAppDispatch: () => typeof store.dispatch = useDispatch;

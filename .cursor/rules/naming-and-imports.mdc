@@ -1,0 +1,39 @@
+---
+description: Naming conventions for files/symbols and import rules in TS/TSX
+globs: src/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Naming & Imports
+
+## File naming (kebab-case is default)
+
+- Regular files: `use-modal.ts`, `path-layout.ts`, `data-type.ts`, `redux-slice.ts`, `not-found/index.tsx`
+- Constants/enums use suffixes: `*.constants.ts`, `*.enum.ts` (e.g. `path.constants.ts`, `query.enum.ts`)
+- `.tsx` components: PascalCase allowed for shadcn-style components (`PermissionRoute.tsx`, `ErrorBoundary.tsx`)
+
+## Symbol naming
+
+- **Interface / Type**: `I` prefix — `IRes<T>`, `IGlobalInfo`, `IPermissionRouteProps`
+- **Enum**: `Enum` prefix + UPPER_SNAKE values — `EnumPermissionType.CREATE`, `EnumQueryKeys.USERS_LIST`
+- **Constant object/map**: `ct` prefix + camelCase — `ctEnvSite`, `ctCountryCode`, `ctDefaultData`
+- **Single constant**: UPPER_SNAKE_CASE — `ACCESS_TOKEN`, `ITEM_PER_PAGE`, `FORMAT_DATE`
+- **Hook**: starts with `use` — `useCustomForm`, `useFilterBar`, `useGetCurrentSession`
+- **Request module**: export an aggregate object named `xxxRequests` / `xxxMiddleware` — `userRequests`, `loginMiddleware`, `fileS3Request`
+
+## Imports
+
+- Always use `@src/...` alias; no relative `../` going up
+- Use barrel `index.ts`: `import { dayjs, isNullOrUndefined } from "@src/utils"` instead of importing each file
+- `eslint-plugin-simple-import-sort` auto-sorts — don't add manual import group comments
+- When adding a new file in a folder with `index.ts` (constants, enums, models, hooks, utils, requests/api), re-export from `index.ts`
+
+## Example
+
+```ts
+import { IRes, IResPagination } from "@src/models";
+import { EnumQueryKeys } from "@src/enums/query.enum";
+import { ctDefaultData } from "@src/constants";
+import { useInvalidateQuery } from "@src/hooks";
+import axios from "@src/requests";
+```

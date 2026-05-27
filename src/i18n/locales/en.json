@@ -1,1 +1,47 @@
-{}
+{
+  "commons": {
+    "APP_NAME": "SimpliNail",
+    "APP_TAGLINE": "Professional Nail Salon POS",
+    "EMAIL_ADDRESS": "Email Address",
+    "PASSWORD": "Password",
+    "SIGN_IN": "Sign In",
+    "SIGN_UP": "Sign up",
+    "SHOW_PASSWORD": "Show password",
+    "HIDE_PASSWORD": "Hide password",
+    "WELCOME": "Welcome, {{name}}"
+  },
+  "login": {
+    "STAFF_LOGIN": "Staff Login",
+    "CUSTOMER_LOGIN": "Customer Login",
+    "STAFF_SIGN_IN": "Staff Sign In",
+    "CUSTOMER_SIGN_IN": "Customer Sign In",
+    "STAFF_SUBTITLE": "Sign in to manage your salon",
+    "CUSTOMER_SUBTITLE": "Sign in to book your appointment",
+    "EMAIL_PLACEHOLDER": "you@example.com",
+    "FORGOT_PASSWORD": "Forgot Password?",
+    "NEED_ACCOUNT": "Need an account?",
+    "WELCOME_BACK_STAFF": "Welcome back, Staff ({{email}})",
+    "WELCOME_BACK_CUSTOMER": "Welcome back, Customer ({{email}})",
+    "SIGN_IN_FAILED": "Sign in failed. Please check your credentials.",
+    "COPYRIGHT": "© {{year}} {{name}}. All rights reserved."
+  },
+  "select_store": {
+    "WELCOME": "Welcome, {{name}}",
+    "POS_DEVICE_ID": "Set POS Device ID",
+    "POS_DEVICE_HINT": "This device is registered to your account.",
+    "TITLE": "Select Your Store",
+    "SUBTITLE": "Choose which location this kiosk will be used for",
+    "SEARCH_PLACEHOLDER": "Search by name, city or code…",
+    "NO_RESULTS": "No stores match your search.",
+    "CONFIRM": "Set Up This Kiosk",
+    "CHANGE_LATER_HINT": "You can change the store later in Settings.",
+    "PLEASE_PICK_ONE": "Please pick a store to continue.",
+    "KIOSK_READY": "Kiosk ready! Connected to {{name}}."
+  },
+  "validation": {
+    "EMAIL_REQUIRED": "Email is required",
+    "EMAIL_INVALID": "Please enter a valid email",
+    "PASSWORD_REQUIRED": "Password is required",
+    "PASSWORD_MIN_LENGTH": "Password must be at least 6 characters"
+  }
+}

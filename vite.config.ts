@@ -1,11 +1,17 @@
-import { defineConfig, type PluginOption } from "vite";
+import { defineConfig, loadEnv, type PluginOption } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import tailwindcss from "@tailwindcss/vite";
 import { visualizer } from "rollup-plugin-visualizer";
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
+  define: {
+    APP_ENV: {
+      ...loadEnv(mode, process.cwd(), "SITE_"),
+      MODE: mode,
+    },
+  },
   plugins: [
     react(),
     tailwindcss(),
@@ -33,4 +39,4 @@ export default defineConfig({
     //   "@src": path.resolve(__dirname, "./src"),
     // },
   },
-});
+}));

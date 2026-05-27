@@ -1,0 +1,59 @@
+---
+description: Axios layer, API module structure, React Query, auth/token
+globs: src/{requests,hooks,stores}/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# API, Auth & React Query
+
+## Axios instance
+
+- Use only the default-export `axios` from `@src/requests` (token + refresh + i18n-error interceptors attached). Don't `import axios from "axios"` in feature code.
+- `baseURL` from `window.__APP_CONFIG__.SITE_BASE_API_URL` (runtime config).
+- Response generics: `IRes<T>` / `IResPagination<T>` / `IResData<T>` from `@src/models`.
+
+## API module layout
+
+```
+src/requests/api/<domain>/
+  <action>.ts            // get/post/put/delete functions
+  prop-state.type.ts     // request/response interfaces (I...)
+  index.ts               // optional re-export
+```
+
+Each file exports an object named `<domain>Requests` or `<domain>Middleware`:
+
+```ts
+const getUserInfo = async (params: IUserInfoParams) => {
+  const response = await axios.get(`/products/${params.id}`);
+  return response.data;
+};
+export const userRequests = { getUserInfo };
+```
+
+When adding a new domain, add `export * from "./<domain>"` to `src/requests/api/index.tsx`.
+
+## Auth / Token
+
+- Access token in cookie via `saveSessionId`/`getSessionId`/`removeSessionId` (`src/requests/token.ts`).
+- Refresh token helpers in `src/requests/refresh-token.ts` (`sameSite: strict`, `secure: true`).
+- Cookie names in `src/constants/cookies.constants.ts` (`ACCESS_TOKEN`, `REFRESH_TOKEN`, `expiresToken`).
+- Don't call refresh-token from components; the interceptor handles it.
+
+## React Query
+
+- `QueryClient` configured in `src/App.tsx` (`refetchOnWindowFocus: false`, `retry: false`). Keep unless there's a clear reason.
+- `queryKey` always from `EnumQueryKeys` (`src/enums/query.enum.ts`). Add new keys to the enum.
+- Invalidate via `useInvalidateQuery(key)` from `@src/hooks`.
+
+```ts
+const { data } = useQuery({
+  queryKey: [EnumQueryKeys.EMPLOYEES_LIST, filter],
+  queryFn: () => userRequests.getEmployees(filter),
+});
+const invalidate = useInvalidateQuery(EnumQueryKeys.EMPLOYEES_LIST);
+```
+
+## Date/time in payload
+
+Use `dayjs` re-exported from `@src/utils` + `FORMAT_DATE` constants in `src/utils/datetime.ts` (e.g. `FORMAT_DATE.BE_DATE_TIME` for backend payloads).
