@@ -1,4 +1,5 @@
 import loadable from "@loadable/component";
+import { BaseLayout } from "@src/components/layouts";
 
 import { EnumFilterDateRangeType } from "@src/enums";
 import { pathConstants } from "@src/router/path.constants";
@@ -21,6 +22,7 @@ export const pathLayout = [
   {
     path: pathConstants.SELECT_STORE,
     component: SelectStorePage,
+    layout: BaseLayout,
     isPrivate: true,
     title: "pages.title_header.SELECT_STORE",
   },
@@ -34,6 +36,7 @@ export const pathLayout = [
   // },
   {
     path: pathConstants.PAGE_NOT_FOUND,
+    layout: BaseLayout,
     component: NotFoundPage,
     title: "pages.title_header.PAGE_NOT_FOUND",
   },

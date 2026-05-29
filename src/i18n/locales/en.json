@@ -43,5 +43,29 @@
     "EMAIL_INVALID": "Please enter a valid email",
     "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_MIN_LENGTH": "Password must be at least 6 characters"
+  },
+  "layouts": {
+    "base": {
+      "BRAND_TITLE": "Simpli Nail POS",
+      "BRAND_SUBTITLE": "Salon Management",
+      "OPEN_MENU": "Open menu",
+      "CLOSE_MENU": "Close menu",
+      "MENU_ARIA": "Main navigation",
+      "NOTIFICATIONS": "Notifications",
+      "menu": {
+        "POINT_OF_SALE": "Point of Sale",
+        "TURNS_TRACKER": "Turns Tracker",
+        "CLOCK_IN_OUT": "Clock In/Out",
+        "EMPLOYEE_TIMESHEETS": "Employee Timesheets",
+        "DASHBOARD": "Dashboard",
+        "CALENDAR": "Calendar",
+        "CUSTOMERS": "Customers",
+        "PAYROLL": "Payroll",
+        "BOOK_KEEPING": "Book Keeping",
+        "INVENTORY": "Inventory",
+        "LOYALTY": "Loyalty",
+        "DISCOUNTS": "Discounts"
+      }
+    }
   }
 }
