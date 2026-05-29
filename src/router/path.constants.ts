@@ -55,4 +55,5 @@ export const pathConstants = {
   STATISTIC_DATE_BY_TIP: "/statistic-date/by-tip",
   // ================= Not Found =================
   PAGE_NOT_FOUND: "/not-found",
+  FORM_DEMO: "/form-demo",
 };

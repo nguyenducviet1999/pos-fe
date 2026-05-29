@@ -11,20 +11,21 @@ const LoginPage = loadable(() => import("@src/pages/login"));
 const SelectStorePage = loadable(() => import("@src/pages/select-store"));
 // const HomePage = loadable(() => import("@src/pages/dashboard"));
 const NotFoundPage = loadable(() => import("@src/pages/not-found"));
+const FormDemoPage = loadable(() => import("@src/pages/form-demo"));
 // ================= User Management ================
 export const pathLayout = [
   {
     path: pathConstants.LOGIN,
     component: LoginPage,
     isAuth: true,
-    title: "pages.title_header.LOGIN",
+    title: "title_header.LOGIN",
   },
   {
     path: pathConstants.SELECT_STORE,
     component: SelectStorePage,
     layout: BaseLayout,
     isPrivate: true,
-    title: "pages.title_header.SELECT_STORE",
+    title: "title_header.SELECT_STORE",
   },
   // {
   //   path: pathConstants.HOME,
@@ -32,13 +33,19 @@ export const pathLayout = [
   //   component: HomePage,
   //   layout: NormalLayout,
   //   isPrivate: true,
-  //   title: "pages.title_header.DASHBOARD",
+  //   title: "title_header.DASHBOARD",
   // },
   {
     path: pathConstants.PAGE_NOT_FOUND,
     layout: BaseLayout,
     component: NotFoundPage,
-    title: "pages.title_header.PAGE_NOT_FOUND",
+    title: "title_header.PAGE_NOT_FOUND",
+  },
+  {
+    path: pathConstants.FORM_DEMO,
+    layout: BaseLayout,
+    component: FormDemoPage,
+    title: "title_header.FORM_DEMO",
   },
   {
     path: "*",

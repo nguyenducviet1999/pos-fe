@@ -93,6 +93,7 @@ const schema = yup.object({
 ## Don'ts
 
 - Don't hardcode display strings (`<button>Sign In</button>`). Use `t("commons.SIGN_IN")`.
+- Don't translate file vi.json
 - Don't concatenate translated pieces. Use interpolation.
 - Don't call `translate(...)` at module top-level scope. Call it lazily inside a function/component.
 - Don't add a feature-specific key when `commons.*` already covers the same text.

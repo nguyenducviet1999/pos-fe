@@ -1,21 +1,29 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
+
+import { EnumSortValueTable } from "@src/enums";
+
+export type TableColumnAlign = "left" | "center" | "right";
 
 export interface TableColumn<RecordType = unknown> {
-  key: keyof RecordType | "";
-  header: string;
-  render?: (row: RecordType) => string | ReactNode | JSX.Element;
-  colSpan?: number;
-  rowSpan?: number;
+  key: keyof RecordType | (string & {});
+  header: ReactNode;
+  render?: (row: RecordType, index: number) => ReactNode;
+  sortable?: boolean;
+  sortKey?: string;
+  width?: number | string;
+  align?: TableColumnAlign;
   headerClassName?: string;
   cellClassName?: string;
-  fixed?: boolean;
-  sortable?: boolean;
-  onSortable?: () => void;
-  children?: TableColumn<RecordType>[];
-  expanded?: boolean;
+  hidden?: boolean;
+}
+
+export interface TableSortState {
+  orderBy: string;
+  order: EnumSortValueTable;
 }
 
 export interface IPagination {
   page: number;
-  rows: number;
+  pageSize: number;
+  total: number;
 }
