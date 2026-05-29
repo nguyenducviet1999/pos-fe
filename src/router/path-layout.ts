@@ -12,6 +12,7 @@ const SelectStorePage = loadable(() => import("@src/pages/select-store"));
 // const HomePage = loadable(() => import("@src/pages/dashboard"));
 const NotFoundPage = loadable(() => import("@src/pages/not-found"));
 const FormDemoPage = loadable(() => import("@src/pages/form-demo"));
+const DashboardPage = loadable(() => import("@src/pages/dashboard"));
 // ================= User Management ================
 export const pathLayout = [
   {
@@ -46,6 +47,13 @@ export const pathLayout = [
     layout: BaseLayout,
     component: FormDemoPage,
     title: "title_header.FORM_DEMO",
+  },
+  {
+    path: pathConstants.DASHBOARD,
+    layout: BaseLayout,
+    component: DashboardPage,
+    isPrivate: true,
+    title: "title_header.DASHBOARD",
   },
   {
     path: "*",

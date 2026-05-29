@@ -13,7 +13,12 @@
     "PICK_DATE_RANGE": "Pick a date range",
     "SELECT_PLACEHOLDER": "Select an option",
     "SEARCH": "Search...",
-    "NO_RESULTS": "No results found"
+    "NO_RESULTS": "No results found",
+    "DAY": "Day",
+    "WEEK": "Week",
+    "MONTH": "Month",
+    "YEAR": "Year",
+    "CUSTOM": "Custom"
   },
   "table": {
     "SHOW": "Show",
@@ -24,7 +29,8 @@
     "LOGIN": "Login",
     "SELECT_STORE": "Select Store",
     "PAGE_NOT_FOUND": "Page Not Found",
-    "FORM_DEMO": "Form Components Demo"
+    "FORM_DEMO": "Form Components Demo",
+    "DASHBOARD": "Dashboard"
   },
   "form_demo": {
     "EYEBROW": "Design system",
@@ -82,6 +88,28 @@
     "TABLE_BOOKINGS": "Bookings",
     "STATUS_ACTIVE": "Active",
     "STATUS_INACTIVE": "Inactive"
+  },
+  "dashboard": {
+    "EYEBROW": "Analytics",
+    "TITLE": "Dashboard",
+    "PERIOD_FILTER": "Date period filter",
+    "ALL_EMPLOYEES": "All Employees",
+    "CUSTOMIZE": "Customize",
+    "DAILY_PAY": "Daily Pay",
+    "TODAYS_REVENUE": "Today's Revenue",
+    "TIPS": "Tips",
+    "PAYMENT_BREAKDOWN": "Payment breakdown",
+    "TOP_SERVICES": "Top services",
+    "PAYMENT_CASH": "Cash",
+    "PAYMENT_CARD": "Card",
+    "PAYMENT_OTHER": "Other",
+    "TRANSACTION_COUNT": "{{count}} transactions",
+    "SERVICE_COUNT": "{{count}} bookings",
+    "PERIOD_DAY_LABEL": "Showing data for {{date}}",
+    "PERIOD_WEEK_LABEL": "Showing data for {{from}} – {{to}}",
+    "PERIOD_MONTH_LABEL": "Showing data for {{month}}",
+    "PERIOD_YEAR_LABEL": "Showing data for {{year}}",
+    "PERIOD_CUSTOM_LABEL": "Showing data from {{from}} to {{to}}"
   },
   "login": {
     "STAFF_LOGIN": "Staff Login",

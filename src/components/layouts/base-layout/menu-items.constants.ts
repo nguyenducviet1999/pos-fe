@@ -52,7 +52,7 @@ export const BASE_LAYOUT_MENU_ITEMS: IBaseMenuItem[] = [
     key: "dashboard",
     labelKey: "layouts.base.menu.DASHBOARD",
     icon: BarChart3Icon,
-    path: "/dashboard",
+    path: pathConstants.DASHBOARD,
   },
   {
     key: "calendar",

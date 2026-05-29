@@ -56,4 +56,5 @@ export const pathConstants = {
   // ================= Not Found =================
   PAGE_NOT_FOUND: "/not-found",
   FORM_DEMO: "/form-demo",
+  DASHBOARD: "/dashboard",
 };
