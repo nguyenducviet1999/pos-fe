@@ -1,1 +1,17 @@
-{}
+{
+  "dashboard": {
+    "DONE": "Xong",
+    "RESET_DASHBOARD": "Đặt lại bảng điều khiển về mặc định",
+    "ADD_WIDGET": "Thêm widget",
+    "ADD_WIDGET_TITLE": "Thêm widget",
+    "ADD_WIDGET_SUBTITLE": "Chọn từ từng nhóm để tùy chỉnh bảng điều khiển.",
+    "WIDGET_ALREADY_ON_DASHBOARD": "Đã có trên bảng điều khiển",
+    "WIDGET_CATEGORY_MONEY": "Tiền",
+    "WIDGET_CATEGORY_SERVICES": "Dịch vụ",
+    "WIDGET_REVENUE_DESC": "Tổng thu hôm nay, phân theo tiền mặt và thẻ.",
+    "WIDGET_TIPS_DESC": "Tổng tiền tip và gratuity đã thu.",
+    "WIDGET_DAILY_PAY_DESC": "Tổng lương/ngày theo khoảng thời gian đã chọn.",
+    "WIDGET_PAYMENT_METHODS_DESC": "Tỷ lệ doanh thu theo tiền mặt, thẻ và phương thức khác.",
+    "WIDGET_TOP_SERVICES_DESC": "Dịch vụ bán chạy theo lượt đặt và doanh thu."
+  }
+}

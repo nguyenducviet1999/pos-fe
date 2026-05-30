@@ -1,12 +1,19 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { Layout } from "react-grid-layout/legacy";
 
 import type { DateRangeValue } from "@src/components/custom/form";
-import { EnumDashboardPeriodType } from "@src/enums/dashboard.enum";
-import { DashboardGrid } from "@src/pages/dashboard/components/dashboard-grid";
+import {
+  EnumDashboardPeriodType,
+  EnumDashboardScreen,
+  EnumDashboardWidgetId,
+} from "@src/enums/dashboard.enum";
+import {
+  addWidget,
+  DashboardGrid,
+} from "@src/pages/dashboard/components/dashboard-grid";
 import { DashboardToolbar } from "@src/pages/dashboard/components/dashboard-toolbar";
-import { defaultDashboardLayout } from "@src/pages/dashboard/dashboard.constants";
+import { defaultDashboardLayouts } from "@src/pages/dashboard/dashboard.constants";
+import type { DashboardLayouts } from "@src/pages/dashboard/dashboard.types";
 import dayjs from "@src/utils/datetime";
 
 const DashboardPage: React.FC = () => {
@@ -18,7 +25,27 @@ const DashboardPage: React.FC = () => {
   });
   const [employeeId, setEmployeeId] = useState("all");
   const [isCustomizing, setIsCustomizing] = useState(false);
-  const [layout, setLayout] = useState<Layout>(defaultDashboardLayout);
+  const [layouts, setLayouts] = useState<DashboardLayouts>(() =>
+    structuredClone(defaultDashboardLayouts),
+  );
+
+  const activeWidgetIds = useMemo(
+    () =>
+      new Set(
+        layouts[EnumDashboardScreen.MD]
+          .filter((item) => !item.hidden)
+          .map((item) => item.i as EnumDashboardWidgetId),
+      ),
+    [layouts],
+  );
+
+  const handleAddWidget = useCallback((widgetId: EnumDashboardWidgetId) => {
+    setLayouts((current) => addWidget(current, widgetId));
+  }, []);
+
+  const handleResetLayout = useCallback(() => {
+    setLayouts(structuredClone(defaultDashboardLayouts));
+  }, []);
 
   const periodLabel = useMemo(() => {
     switch (period) {
@@ -75,12 +102,16 @@ const DashboardPage: React.FC = () => {
           employeeId={employeeId}
           onEmployeeChange={setEmployeeId}
           isCustomizing={isCustomizing}
-          onCustomizeToggle={() => setIsCustomizing((prev) => !prev)}
+          onCustomizeStart={() => setIsCustomizing(true)}
+          onCustomizeEnd={() => setIsCustomizing(false)}
+          onResetLayout={handleResetLayout}
+          activeWidgetIds={activeWidgetIds}
+          onAddWidget={handleAddWidget}
         />
 
         <DashboardGrid
-          layout={layout}
-          onLayoutChange={setLayout}
+          layouts={layouts}
+          onLayoutsChange={setLayouts}
           isCustomizing={isCustomizing}
           periodLabel={periodLabel}
         />

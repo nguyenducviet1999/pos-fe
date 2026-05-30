@@ -22,6 +22,13 @@ export const pathLayout = [
     title: "title_header.LOGIN",
   },
   {
+    path: pathConstants.HOME,
+    component: DashboardPage,
+    layout: BaseLayout,
+    isPrivate: true,
+    title: "title_header.DASHBOARD",
+  },
+  {
     path: pathConstants.SELECT_STORE,
     component: SelectStorePage,
     layout: BaseLayout,
@@ -36,12 +43,7 @@ export const pathLayout = [
   //   isPrivate: true,
   //   title: "title_header.DASHBOARD",
   // },
-  {
-    path: pathConstants.PAGE_NOT_FOUND,
-    layout: BaseLayout,
-    component: NotFoundPage,
-    title: "title_header.PAGE_NOT_FOUND",
-  },
+
   {
     path: pathConstants.FORM_DEMO,
     layout: BaseLayout,
@@ -54,6 +56,12 @@ export const pathLayout = [
     component: DashboardPage,
     isPrivate: true,
     title: "title_header.DASHBOARD",
+  },
+  {
+    path: pathConstants.PAGE_NOT_FOUND,
+    layout: BaseLayout,
+    component: NotFoundPage,
+    title: "title_header.PAGE_NOT_FOUND",
   },
   {
     path: "*",

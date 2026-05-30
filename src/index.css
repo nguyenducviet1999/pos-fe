@@ -128,6 +128,10 @@
   --font-heading: var(--font-sans);
   --font-mono: ui-monospace, "JetBrains Mono", Consolas, monospace;
 
+  /* Main UI size — text-sm = 13px (default Tailwind sm is 14px) */
+  --text-sm: 13px;
+  --text-sm--line-height: calc(18 / 13);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
@@ -205,7 +209,7 @@
   }
 
   body {
-    @apply min-h-svh bg-background text-foreground;
+    @apply min-h-svh bg-background text-foreground text-sm;
   }
 
   #root {

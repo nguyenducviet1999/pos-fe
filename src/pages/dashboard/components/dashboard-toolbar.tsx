@@ -1,6 +1,11 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Settings2Icon } from "lucide-react";
+import {
+  CheckIcon,
+  LayoutGridIcon,
+  RotateCcwIcon,
+  Settings2Icon,
+} from "lucide-react";
 
 import {
   DateRangePicker,
@@ -8,8 +13,12 @@ import {
   type DateRangeValue,
 } from "@src/components/custom/form";
 import { Button } from "@src/components/ui/button";
-import { EnumDashboardPeriodType } from "@src/enums/dashboard.enum";
+import {
+  EnumDashboardPeriodType,
+  EnumDashboardWidgetId,
+} from "@src/enums/dashboard.enum";
 import { cn } from "@src/lib/utils";
+import { DashboardAddWidgetDialog } from "@src/pages/dashboard/components/dashboard-add-widget-dialog";
 import { demoEmployees } from "@src/pages/dashboard/dashboard.constants";
 
 interface DashboardToolbarProps {
@@ -20,7 +29,11 @@ interface DashboardToolbarProps {
   employeeId: string;
   onEmployeeChange: (employeeId: string) => void;
   isCustomizing: boolean;
-  onCustomizeToggle: () => void;
+  onCustomizeStart: () => void;
+  onCustomizeEnd: () => void;
+  onResetLayout: () => void;
+  activeWidgetIds: Set<string>;
+  onAddWidget: (widgetId: EnumDashboardWidgetId) => void;
 }
 
 const periodOptions = [
@@ -47,9 +60,20 @@ export function DashboardToolbar({
   employeeId,
   onEmployeeChange,
   isCustomizing,
-  onCustomizeToggle,
+  onCustomizeStart,
+  onCustomizeEnd,
+  onResetLayout,
+  activeWidgetIds,
+  onAddWidget,
 }: DashboardToolbarProps) {
   const { t } = useTranslation();
+  const [isAddWidgetOpen, setIsAddWidgetOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isCustomizing) {
+      setIsAddWidgetOpen(false);
+    }
+  }, [isCustomizing]);
 
   const employeeOptions = useMemo(
     () => [
@@ -113,14 +137,43 @@ export function DashboardToolbar({
             placeholder={t("dashboard.ALL_EMPLOYEES")}
           />
         </div>
+        {isCustomizing && (
+          <>
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              className="shrink-0"
+              onClick={onResetLayout}
+              aria-label={t("dashboard.RESET_DASHBOARD")}
+            >
+              <RotateCcwIcon />
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              className="shrink-0"
+              onClick={() => setIsAddWidgetOpen(true)}
+            >
+              <LayoutGridIcon />
+              {t("dashboard.ADD_WIDGET")}
+            </Button>
+            <DashboardAddWidgetDialog
+              open={isAddWidgetOpen}
+              onOpenChange={setIsAddWidgetOpen}
+              activeWidgetIds={activeWidgetIds}
+              onAddWidget={onAddWidget}
+            />
+          </>
+        )}
         <Button
           type="button"
           variant={isCustomizing ? "default" : "outline"}
           className="shrink-0"
-          onClick={onCustomizeToggle}
+          onClick={isCustomizing ? onCustomizeEnd : onCustomizeStart}
         >
-          <Settings2Icon />
-          {t("dashboard.CUSTOMIZE")}
+          {isCustomizing ? <CheckIcon /> : <Settings2Icon />}
+          {isCustomizing ? t("dashboard.DONE") : t("dashboard.CUSTOMIZE")}
         </Button>
       </div>
     </div>
